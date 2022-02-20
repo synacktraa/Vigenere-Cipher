@@ -32,17 +32,6 @@ int Strcmp(const char* string1, const char* string2){
       }
 }
 
-int toLower(int ch){
-
-   int lower;
-   if(ch >= 65 && ch <= 90){
-      lower = ch+32;
-   } else {
-      lower = ch;
-   }
-   return lower;
-}
-
 int toUpper(int ch){
 
    int upper;
@@ -59,7 +48,8 @@ int isLower(int ch){
       return 1;
    return 0 ;
 }
-void vignere_cipher(char*cred, char*key, char*mode){
+
+void vignere_cipher(char*key, char*mode, char*cred){
 
     auto void encrypt();
     auto void decrypt();
@@ -126,11 +116,17 @@ void vignere_cipher(char*cred, char*key, char*mode){
 int main(int argc, char*argv[]){
     
     if(argc == 2 && (Strcmp(argv[1], "--help")||Strcmp(argv[1], "-h"))){
-        fprintf(stdout, "\nUsage: %s <string> <key> <mode>\nCLI options:\n--encrypt = Encrypts the string\n--decrypt = Decrypts the string", argv[0]);
+        fprintf(stdout, "\nUsage: %s <key> <mode> <data>\n|CLI options|:-\
+        \n\t<data> = A plaintext or ciphertext.\
+        \n\t<key> = A key string to scramble and unscramble the data.\
+        \n\t<mode>:\n\t\t--encrypt = Encrypts the data string\
+        \n\t\t--decrypt = Decrypts the data string", argv[0]);
     }else if(argc == 4){
         vignere_cipher(argv[1], argv[2], argv[3]);
     } else{
-        fprintf(stderr, "\nUsage: %s <string> <key> <mode>", argv[0]);
+        fprintf(stderr, "\nUsage: %s <key> <mode> <data>\
+        \nFor more, check help section:\
+        \n    %s --help 'or' -h", argv[0], argv[0]);
         return 1;
     }
 
