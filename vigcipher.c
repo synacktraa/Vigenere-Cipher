@@ -126,11 +126,11 @@ void vignere_cipher(char*cred, char*key, char*mode){
 int main(int argc, char*argv[]){
     
     if(argc == 2 && (Strcmp(argv[1], "--help")||Strcmp(argv[1], "-h"))){
-        fprintf(stdout, "Usage: %s <string> <key> <mode>\nmode: [1]|--encrypt| [2]|--decrypt|", argv[0]);
+        fprintf(stdout, "\nUsage: %s <string> <key> <mode>\nmode-> [1]|--encrypt| [2]|--decrypt|", argv[0]);
     }else if(argc == 4){
         vignere_cipher(argv[1], argv[2], argv[3]);
     } else{
-        fprintf(stderr, "Usage: %s <string> <key> <mode>", argv[0]);
+        fprintf(stderr, "\nUsage: %s <string> <key> <mode>", argv[0]);
         return 1;
     }
 
