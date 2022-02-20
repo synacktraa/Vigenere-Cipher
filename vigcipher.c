@@ -126,7 +126,7 @@ void vignere_cipher(char*cred, char*key, char*mode){
 int main(int argc, char*argv[]){
     
     if(argc == 2 && (Strcmp(argv[1], "--help")||Strcmp(argv[1], "-h"))){
-        fprintf(stdout, "\nUsage: %s <string> <key> <mode>\nmode-> [1]|--encrypt| [2]|--decrypt|", argv[0]);
+        fprintf(stdout, "\nUsage: %s <string> <key> <mode>\nCLI options:\n--encrypt = Encrypts the string\n--decrypt = Decrypts the string", argv[0]);
     }else if(argc == 4){
         vignere_cipher(argv[1], argv[2], argv[3]);
     } else{
