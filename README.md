@@ -9,7 +9,7 @@ gcc vigcipher.c -o vc
 ```
 ---
 Ask For Help:
-```bash
+```powershell
 vc -h 'or' vc --help
 ```
 Output:
