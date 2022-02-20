@@ -39,6 +39,6 @@ vc key --decrypt "Reau Xcr Ambpb"
 ```
 Output:
 ```
-Output: Hack Teh World
+Hack Teh World
 ```
 ___
