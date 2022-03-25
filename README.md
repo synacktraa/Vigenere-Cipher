@@ -2,7 +2,6 @@
 
 >Vigenere Ciphers' encryption and decryption algorithm implemented in C. 
 
-
 ## Help
 ```bash
 vigit -h 
@@ -24,7 +23,7 @@ Usage: vigit.exe -k <key> -e/-d data
 vigit -k key -e "Star this project :)"
 ```
 Output:
-```
+```bash
 Cxyb xfsw nbshogr :)
 ```
 
@@ -33,6 +32,6 @@ Cxyb xfsw nbshogr :)
 vigit -k key -d "Reto e lsgc new (;"
 ```
 Output:
-```
+```bash
 Have a nice day (;
 ```
