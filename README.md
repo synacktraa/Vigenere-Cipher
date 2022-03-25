@@ -1,21 +1,16 @@
 # Vigenere Cipher
 
->Vigenere Ciphers' encryption and decryption algorithm written in C. 
+>Vigenere Ciphers' encryption and decryption algorithm implemented in C. 
 
-Compile:
-
-```powershell
-gcc vigcipher.c -o vc
-```
 #
-Ask For Help:
-```powershell
-vc -h 'or' vc --help
+## Help:
+```bash
+vigit -h 
 ```
 Output:
-```
+```bash
 
-Usage: vc.exe <key> <mode> <data>
+Usage: vigit.exe -k <key> -e/-d data
 |CLI options|:-
         <data> = A plaintext or ciphertext.
         <key> = A key string to scramble and unscramble the data.
@@ -25,21 +20,19 @@ Usage: vc.exe <key> <mode> <data>
 ```
 #
 ## Encryption:
-```powershell
-vc key --encrypt "Hack Teh World"
+```bash
+vigit -k key -e "Star this project :)"
 ```
 Output:
 ```
-Reau Xcr Ambpb
+Cxyb xfsw nbshogr :)
 ```
 #
 ## Decryption:
-```powershell
-vc key --decrypt "Reau Xcr Ambpb"
+```bash
+vigit -k key -d "Reto e lsgc new (;"
 ```
 Output:
 ```
-Hack Teh World
+Have a nice day (;
 ```
-#
-> It works now...
