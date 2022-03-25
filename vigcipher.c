@@ -1,132 +1,126 @@
 #include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+#include<stdlib.h>
+
 #define MAX 100
-#define LET 26
+#define NLET 26
 #define UTL 32
 
-int Strlen(const char* string){
+char *basename(char const *path) {
+
+    auto char *win_basename_parser(char const *);
+    auto char *unix_basename_parser(char const *);
     
-    int len = 0;
-    while (*string != '\0'){
-        len++;
-        string++;
+    char *win_basename_parser(char const *path) {
+        char *s = strrchr(path, '\\');
+        if(!s) 
+            return strdup(path);
+        else 
+            return strdup(s + 1);
     }
-    return len;    
+
+    char *unix_basename_parser(char const *path) {
+        char *s = strrchr(path, '/');
+        if(!s) 
+            return strdup(path);
+        else 
+            return strdup(s + 1);
+    }
+
+    if(strcmp(path, unix_basename_parser(path)))
+        return strdup(unix_basename_parser(path));
+
+    return strdup(win_basename_parser(path));
 }
 
-int Strcmp(const char* string1, const char* string2){
-
-   int len_string1 = Strlen(string1);
-   int len_string2 = Strlen(string2);
-
-   if((len_string1 - len_string2) == 0){
-      for(int i = 0; i < len_string1; i++){
-         if(*(string1+i) == *(string2+i))
-            len_string2--;         
-      }
-      if(len_string2 == 0)
-         return 0;
-      else
-         return 1;
-   } else{
-      return 1;
-      }
-}
-
-int toUpper(int ch){
-
-   int upper;
-   if(ch >= 97 && ch <= 122){
-      upper = ch-32;
-   } else {
-      upper = ch;
-   }
-   return upper;
-}
-
-int isLower(int ch){
-   if(ch >= 97 && ch <= 122)
-      return 1;
-   return 0 ;
-}
-
-void vignere_cipher(char*key, char*mode, char*cred){
+int vignere_cipher(char*key, char*mode, char*cred){
 
     auto void encrypt();
     auto void decrypt();
 
-    char outcome[MAX];
     int cred_len, key_len;
 
-    cred_len = Strlen(cred);
-    key_len = Strlen(key);
+    cred_len = strlen(cred);
+    key_len = strlen(key);
+
+    char *cipher = (char*)malloc(sizeof(char) * cred_len);
+    char *gen_key = (char*)malloc(sizeof(char) * cred_len);
+
+    if(cipher == NULL || gen_key == NULL){
+        return 1;
+    }
 
     int j = 0, i;
     if(key_len < cred_len){
-        for(i = key_len; i < cred_len; ++i){
+        for(i = 0; i < cred_len; ++i){
             if(j >= key_len)
                 j = 0;
-            if(*(cred+i) == 32)
-                *(key+i) = 32;
-            else {*(key+i) = *(key+j);++j;}
+            if((i[cred] >=32 && i[cred] <=64) || (i[cred] >=91 && i[cred] <=96)
+                || (i[cred] >=123 && i[cred] <=126)){
+                    i[gen_key] = i[cred];
+            } else {i[gen_key] = j[key]; ++j;}
             
         }
-        *(key+i) = '\0';   
+        i[gen_key] = '\0';   
     }
-    if(Strcmp(mode, "--encrypt") == 0) encrypt();
-    else if(Strcmp(mode, "--decrypt") == 0) decrypt();
+
+    if(strcmp(mode, "--encrypt") == 0) encrypt();
+    else if(strcmp(mode, "--decrypt") == 0) decrypt();
 
     void encrypt(){
-        int i;
-        for(i = 0; i < Strlen(cred); ++i){
-            if((*(cred+i) >=32 && *(cred+i) <=64) || (*(cred+i) >=91 && *(cred+i) <=96) || (*(cred+i) >=123 && *(cred+i) <=126)){
-                *(outcome+i) = *(cred+i);
-            } else if((toUpper(*(cred+i)) >=65 && toUpper(*(cred+i)) <=90)){
-                *(outcome+i) = toUpper(*(cred+i)) - (65 - toUpper(*(key+i)));
-                if(*(outcome+i) > 90){
-                    *(outcome+i) = *(outcome+i)-LET;
-                }
-            }
-            if(isLower(*(cred+i))){
-                *(outcome+i) = *(outcome+i)+UTL;
+
+        for(i = 0; i < strlen(cred); ++i){
+            if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
+                i[cipher] = toupper(i[cred]) - (65 - toupper(i[gen_key]));
+                if(i[cipher] > 90)
+                    i[cipher] = i[cipher]-NLET;
+            } else
+                i[cipher] = i[cred];
+
+            if(islower(i[cred])){
+                i[cipher] = i[cipher]+UTL;
             }
         }
-        *(outcome+i) = '\0';
+        i[cipher] = '\0';
     }
 
     void decrypt(){
-        int i;
-        for(i = 0; i < Strlen(cred); ++i){
-            if((*(cred+i) >=32 && *(cred+i) <=64) || (*(cred+i) >=91 && *(cred+i) <=96) || (*(cred+i) >=123 && *(cred+i) <=126)){
-                *(outcome+i) = *(cred+i);
-            } else if((toUpper(*(cred+i)) >=65 && toUpper(*(cred+i)) <=90)){
-                *(outcome+i) = toUpper(*(cred+i)) - (toUpper(*(key+i)) - 65);
-                if(*(outcome+i) < 65){
-                    *(outcome+i) = *(outcome+i)+LET;
-                }
-            }
-            if(isLower(*(cred+i))){
-                *(outcome+i) = *(outcome+i)+UTL;
+
+        for(i = 0; i < strlen(cred); ++i){
+            if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
+                i[cipher] = toupper(i[cred]) - (toupper(i[gen_key]) - 65);
+                if(i[cipher] < 65)
+                    i[cipher] = i[cipher]+NLET;
+            }else
+                i[cipher] = i[cred];
+
+            if(islower(i[cred])){
+                i[cipher] = i[cipher]+UTL;
             }
         }
-        *(outcome+i) = '\0';
+        i[cipher] = '\0';
     }
-    printf("%s", outcome);
+    puts(cipher);
+
+    free(cipher);
+    free(gen_key);
 }
 
 int main(int argc, char*argv[]){
     
-    if(argc == 2 && (Strcmp(argv[1], "--help")||Strcmp(argv[1], "-h"))){
+    if(argc == 2 && (strcmp(argv[1], "--help")||strcmp(argv[1], "-h"))){
         fprintf(stdout, "\nUsage: %s <key> <mode> <data>\n|CLI options|:-\
         \n\t<data> = A plaintext or ciphertext.\
         \n\t<key> = A key string to scramble and unscramble the data.\
         \n\t<mode>:\n\t\t--encrypt = Encrypts the data string\
-        \n\t\t--decrypt = Decrypts the data string", argv[0]);
+        \n\t\t--decrypt = Decrypts the data string\n\n", basename(argv[0]));
     }else if(argc == 4){
         vignere_cipher(argv[1], argv[2], argv[3]);
     } else{
         fprintf(stderr, "\nUsage: %s <key> <mode> <data>\
         \nFor more, check help section:\
-        \n    %s --help 'or' -h", argv[0], argv[0]);
+        \n    %s --help 'or' -h\n", basename(argv[0]), basename(argv[0]));
         return 1;
     }
 
