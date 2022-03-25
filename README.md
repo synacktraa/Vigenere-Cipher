@@ -1,4 +1,4 @@
-# Vigenere Cipher   | <a href="https://www.codacy.com/gh/SynAcktraa/Vigenere-Cipher/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SynAcktraa/Vigenere-Cipher&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/67e0b6137ded418eb654b73b177b7293"/></a> |
+# Vigenere Cipher   | <img src="https://app.codacy.com/project/badge/Grade/67e0b6137ded418eb654b73b177b7293"/> |
 
 >Vigenere Ciphers' encryption and decryption algorithm implemented in C. 
 
