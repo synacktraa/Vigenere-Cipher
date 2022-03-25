@@ -7,7 +7,7 @@ Compile:
 ```powershell
 gcc vigcipher.c -o vc
 ```
----
+#
 Ask For Help:
 ```powershell
 vc -h 'or' vc --help
@@ -23,7 +23,7 @@ Usage: vc.exe <key> <mode> <data>
                 --encrypt = Encrypts the data string
                 --decrypt = Decrypts the data string
 ```
----
+#
 ## Encryption:
 ```powershell
 vc key --encrypt "Hack Teh World"
@@ -32,7 +32,7 @@ Output:
 ```
 Reau Xcr Ambpb
 ```
----
+#
 ## Decryption:
 ```powershell
 vc key --decrypt "Reau Xcr Ambpb"
@@ -41,6 +41,5 @@ Output:
 ```
 Hack Teh World
 ```
-___
-
+#
 > It works now...
