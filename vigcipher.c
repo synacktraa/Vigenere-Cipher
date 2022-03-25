@@ -59,6 +59,9 @@ char* key_generator(char*key, char*cred){
 
     int cred_len, key_len, j = 0, i;
 
+    if(cred == NULL)
+        exit(0);
+
     cred_len = strlen(cred);
     key_len = strlen(key);
 
@@ -96,6 +99,9 @@ char* key_generator(char*key, char*cred){
 
 void encrypt(char* cred, char* key){
 
+    if(cred == NULL)
+        exit(0);
+
     int cred_len = strlen(cred), i;
     char *cipher = (char*)malloc(sizeof(char) * cred_len);
 
@@ -122,6 +128,9 @@ void encrypt(char* cred, char* key){
 
 
 void decrypt(char* cred, char* key){
+
+    if(cred == NULL)
+        exit(0);
 
     int cred_len = strlen(cred), i;
     char *cipher = (char*)malloc(sizeof(char) * cred_len);
