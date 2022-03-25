@@ -59,11 +59,8 @@ char* key_generator(char*key, char*cred){
 
     int cred_len, key_len, j = 0, i;
 
-    if(cred == NULL)
-        exit(0);
-
-    cred_len = strlen(cred);
-    key_len = strlen(key);
+    cred_len = strlen(cred)+1;
+    key_len = strlen(key)+1;
 
     char *gen_key = (char*)malloc(sizeof(char) * cred_len);
 
@@ -99,16 +96,13 @@ char* key_generator(char*key, char*cred){
 
 void encrypt(char* cred, char* key){
 
-    if(cred == NULL)
-        exit(0);
-
-    int cred_len = strlen(cred), i;
+    int cred_len = strlen(cred)+1, i;
     char *cipher = (char*)malloc(sizeof(char) * cred_len);
 
     if(cipher == NULL)
         exit(0);
 
-    for(i = 0; i < strlen(cred); ++i){
+    for(i = 0; i < strlen(cred)+1; ++i){
         if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
             i[cipher] = toupper(i[cred]) - (65 - toupper(i[key]));
             if(i[cipher] > 90)
@@ -129,16 +123,13 @@ void encrypt(char* cred, char* key){
 
 void decrypt(char* cred, char* key){
 
-    if(cred == NULL)
-        exit(0);
-
-    int cred_len = strlen(cred), i;
+    int cred_len = strlen(cred)+1, i;
     char *cipher = (char*)malloc(sizeof(char) * cred_len);
 
     if(cipher == NULL)
         exit(1);
 
-    for(i = 0; i < strlen(cred); ++i){
+    for(i = 0; i < strlen(cred)+1; ++i){
         if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
             i[cipher] = toupper(i[cred]) - (toupper(i[key]) - 65);
             if(i[cipher] < 65)
