@@ -12,10 +12,7 @@ vigit: vigcipher.o
 clean:
 
 ifeq ($(OS),Windows_NT)
-	del *.o, vigit.exe
+	del *.o, vigit*
 else
-	CHECK := $(shell uname)
-	ifeq ($(CHECK), Linux)
-		rm *.o vigit
-	endif
+	rm *.o vigit*
 endif
