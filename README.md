@@ -9,13 +9,13 @@ vigit -h
 Output:
 ```bash
 
-Usage: vigit.exe -k <key> -e/-d data
+Usage: vigit -k <key> -e/-d data
+Note: to take input from file, put 'file:' before filename
+
 |CLI options|:-
-        <data> = A plaintext or ciphertext.
-        <key> = A key string to scramble and unscramble the data.
-        <mode>:
-                --encrypt = Encrypts the data string
-                --decrypt = Decrypts the data string
+   -k = takes next argument as key to manipulate data
+   -e = takes next argument as data to encrypt it
+   -d = takes next argument as data to decrypt it
 ```
 
 ## Encryption
