@@ -47,7 +47,7 @@ Usage: vigit -k <key> (-e|-d)  (-s|-f) (string|file)
    -d = decrypts the data string
 ```
 
-## Encryption
+### __Encryption__
 ```bash
 ./vigit -k key -e -s "Star this project :)"
 ```
@@ -64,7 +64,7 @@ Output:
 ```bash
 rxrzw://esxfef.ayq/QirYmorbey/Fmeorcbi-Astfov
 ```
-## Decryption
+### __Decryption__
 ```bash
 ./vigit -k key -d -s "Reto e lsgc new (;"
 ```
