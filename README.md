@@ -81,3 +81,13 @@ Output:
 ```bash
 PRs are welcome 0_0
 ```
+
+## **License**
+
+### <a target="_blank" href="https://choosealicense.com/licenses/mit/">MIT</a>
+
+Copyright for portions of project [Vigenere-Cipher](https://github.com/SynAcktraa/Vigenere-Cipher) are held by [Github Account [SynAcktraa](https://github.com/SynAcktraa) Owner, 2022] as part of project [Vigenere-Cipher](https://github.com/SynAcktraa/Vigenere-Cipher)
+
+All other copyright for project [Vigenere-Cipher](https://github.com/SynAcktraa/Vigenere-Cipher) are held by [Github Account [SynAcktraa](https://github.com/SynAcktraa) Owner, 2022].
+
+Check the [LICENSE](LICENSE) for more details.
