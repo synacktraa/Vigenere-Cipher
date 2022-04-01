@@ -7,38 +7,16 @@
 #define NLET 26
 #define UTL 32
 
-char *basename(char const *);
-int delete(char*, int, int);
-char* key_generator(char*, char*);
-void encrypt(char*, char*);
-void decrypt(char*, char*);
 
+char ch = 0, slash = '/';
 
-char *basename(char const *path) {
+char *basename(char const *path, char slash) {
 
-    auto char *win_basename_parser(char const *);
-    auto char *unix_basename_parser(char const *);
-    
-    char *win_basename_parser(char const *path) {
-        char *s = strrchr(path, '\\');
-        if(!s) 
-            return strdup(path);
-        else 
-            return strdup(s + 1);
-    }
-
-    char *unix_basename_parser(char const *path) {
-        char *s = strrchr(path, '/');
-        if(!s) 
-            return strdup(path);
-        else 
-            return strdup(s + 1);
-    }
-
-    if(strcmp(path, unix_basename_parser(path)))
-        return strdup(unix_basename_parser(path));
-
-    return strdup(win_basename_parser(path));
+    char *s = strrchr(path, slash);
+    if(!s) 
+        return strdup(path);
+    else 
+        return strdup(s + 1);
 }
 
 
@@ -52,6 +30,63 @@ int delete(char*data, int index, int len){
     len--;
     return len;
 
+}
+
+
+int get_filesize(char file_name[]){
+
+    FILE* fp = fopen(file_name, "r");
+    if (fp == NULL) {
+        return -1;
+    }
+    fseek(fp, 0L, SEEK_END);
+    int res = ftell(fp);
+    fclose(fp);
+  
+    return res;
+}
+
+
+int checkIfFileExists(const char * filename) {
+
+    FILE *file;
+    if((file = fopen(filename, "r")) != NULL) {
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
+
+
+char* get_file_data(char*file) {
+
+/*
+    Checks if file exists on the system, if yes
+    stores the file size in buffer_len var
+    by evaulating get_filesize function which 
+    retrieves the file size and then reads the
+    file line by line and stores it in buffer 
+    and then concatenate it to data_storage
+    and finally frees the buffer and return data_storage
+*/
+    if(!checkIfFileExists(file)) {
+        fprintf(stderr, "FileError: can't open %s file.", file);
+        putc(ch, stdout);
+        exit(1);
+    }
+
+    int buffer_len = get_filesize(file)+2;
+    
+    FILE * file_in = fopen(file, "r");
+    char* data_storage = (char*)malloc(sizeof(char) * buffer_len);
+    char* buffer = (char*)malloc(sizeof(char) * buffer_len);
+
+    memset(data_storage, 0, strlen(data_storage));
+    while (fgets(buffer, buffer_len, file_in))
+        strcat(data_storage, buffer);
+
+    free(buffer);
+    return data_storage;
 }
 
 
@@ -70,7 +105,8 @@ char* key_generator(char*key, char*cred){
     for(i = 0; i < key_len; ++i){
 
         if(isdigit(i[key])){
-            fprintf(stderr, "character %c not in list, expected: [a-zA-Z]", i[key]);
+            fprintf(stderr, "CharError: character %c not in list, expected -> [a-zA-Z]", i[key]);
+            putchar(ch);
             exit(1);
         }
 
@@ -94,88 +130,94 @@ char* key_generator(char*key, char*cred){
 }
 
 
-void encrypt(char* cred, char* key){
+void eval(char* cred, char* key, char operstatus){
 
     int cred_len = strlen(cred)+1, i;
-    char *cipher = (char*)malloc(sizeof(char) * cred_len);
+    char *product = (char*)malloc(sizeof(char) * cred_len);
 
-    if(cipher == NULL)
+
+    if(product == NULL)
         exit(0);
-
+        
     for(i = 0; i < strlen(cred)+1; ++i){
-        if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
-            i[cipher] = toupper(i[cred]) - (65 - toupper(i[key]));
-            if(i[cipher] > 90)
-                i[cipher] = i[cipher]-NLET;
-        } else
-            i[cipher] = i[cred];
+        if(operstatus == 'e'){
+            if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
+                i[product] = toupper(i[cred]) - (65 - toupper(i[key]));
+                if(i[product] > 90)
+                    i[product] = i[product]-NLET;
+            } else i[product] = i[cred];
 
+        } else{ 
+            if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
+                i[product] = toupper(i[cred]) - (toupper(i[key]) - 65);
+                if(i[product] < 65)
+                    i[product] = i[product]+NLET;
+            } else i[product] = i[cred];
+        }
         if(islower(i[cred])){
-            i[cipher] = i[cipher]+UTL;
+            i[product] = i[product]+UTL;
         }
     }
-    i[cipher] = '\0';
-    puts(cipher);
+    i[product] = '\0';
 
-    free(cipher); free(key);
+    free(key);
+    puts(product);
+    free(product); 
 }
 
 
-void decrypt(char* cred, char* key){
+void help(){
+    fprintf(stdout, "\n|CLI options|:-\
+        \n   -k = takes next argument as key to manipulate data\
+        \n   -e = takes next argument as data to encrypt it\
+        \n   -d = takes next argument as data to decrypt it");
+        putchar(ch);
 
-    int cred_len = strlen(cred)+1, i;
-    char *cipher = (char*)malloc(sizeof(char) * cred_len);
-
-    if(cipher == NULL)
-        exit(1);
-
-    for(i = 0; i < strlen(cred)+1; ++i){
-        if((toupper(i[cred]) >=65 && toupper(i[cred]) <=90)){
-            i[cipher] = toupper(i[cred]) - (toupper(i[key]) - 65);
-            if(i[cipher] < 65)
-                i[cipher] = i[cipher]+NLET;
-        }else
-            i[cipher] = i[cred];
-
-        if(islower(i[cred])){
-            i[cipher] = i[cipher]+UTL;
-        }
-    }
-    i[cipher] = '\0';
-    puts(cipher);
-
-    free(cipher); free(key);
 }
 
+void usage(char* exe){
+    fprintf(stderr, "\nUsage: %s -k <key> -e/-d data", exe);
+    fprintf(stderr, "\nFor more, check help section:\
+    \n    %s -h", exe);
+    putchar(ch);
+
+}
+
+int validate_args(char* next_arg, char* exe, char* type){
+    if(next_arg == NULL ||
+        !strcmp(next_arg, "-e") ||
+        !strcmp(next_arg, "-d") ||
+        !strcmp(next_arg, "-k")){
+            fprintf(stderr, "InputError: %s not detected!", type);
+            putchar(ch);
+            usage(basename(exe, slash));
+            return 1;
+    }
+    return 0;
+}
 
 int main(int argc, char*argv[]){
     
-    auto void help();
-    auto void usage(char*);
 
     int enc_stat = 0, dec_stat = 0, i;
-    char *keygen, *key, *cred;
+    char *keygen, *key, *src, *cred, op = 0;
 
-    void help(){
-        fprintf(stdout, "\n|CLI options|:-\
-            \n\t<data> = A plaintext or ciphertext.\
-            \n\t<key> = A key string to scramble and unscramble the data.\
-            \n\t<mode>:\n\t\t--encrypt = Encrypts the data string\
-            \n\t\t--decrypt = Decrypts the data string\n\n");
-    }
-
-    void usage(char* exe){
-        fprintf(stderr, "\nUsage: %s -k <key> -e/-d data\n", exe);
-        fprintf(stderr, "\nFor more, check help section:\
-        \n    %s -h\n\n", exe);
-    }
+    #ifdef _WIN32
+        ch = 0;
+        slash = '\\';
+    #elif __unix__
+        ch = 10;
+        slash = '/';
+    #endif
 
     if (argc == 1){
-        usage(basename(argv[0]));
+        usage(basename(argv[0], slash));
         return 1;
 
     } else if(argc == 2 && (!strcmp(argv[1], "-h"))){
-        fprintf(stdout, "\nUsage: %s -k <key> -e/-d data", basename(argv[0]));
+        fprintf(stdout, "\nUsage: %s -k <key> -e/-d data\n", basename(argv[0], slash));
+        fprintf(stdout, "Note: to take input from file, put 'file:' before filename");
+        putchar(ch);
         help();
         return 0;
 
@@ -183,14 +225,8 @@ int main(int argc, char*argv[]){
 
         for(i = 0; i < argc; ++i){
             if(!strcmp(argv[i], "-k")){
-                if(argv[i+1] == NULL ||
-                   !strcmp(argv[i+1], "-e") ||
-                   !strcmp(argv[i+1], "-d") ||
-                   !strcmp(argv[i+1], "-k")){
-                        fprintf(stderr, "InputError: key not detected!\n");
-                        usage(basename(argv[0]));
-                        return 1;
-                } 
+                if(validate_args(argv[i+1], argv[0], "key"))
+                    return 1;
                 key = argv[i+1];
             } else 
                 continue;
@@ -198,15 +234,9 @@ int main(int argc, char*argv[]){
 
         for(i = 0; i < argc; ++i){
             if(!strcmp(argv[i], "-e")){
-                if(argv[i+1] == NULL ||
-                   !strcmp(argv[i+1], "-e") ||
-                   !strcmp(argv[i+1], "-d") ||
-                   !strcmp(argv[i+1], "-k")){
-                        fprintf(stderr, "InputError: data not detected!\n");
-                        usage(basename(argv[0]));
-                        return 1;
-                }
-                cred = argv[i+1];
+                if(validate_args(argv[i+1], argv[0], "data"))
+                    return 1;
+                src = argv[i+1];
                 enc_stat = 1;
             } else 
                 continue;
@@ -214,15 +244,9 @@ int main(int argc, char*argv[]){
 
         for(i = 0; i < argc; ++i){
             if(!strcmp(argv[i], "-d")){
-                if(argv[i+1] == NULL ||
-                   !strcmp(argv[i+1], "-e") ||
-                   !strcmp(argv[i+1], "-d") ||
-                   !strcmp(argv[i+1], "-k")){
-                    fprintf(stderr, "InputError: data not detected!\n");
-                    usage(basename(argv[0]));
+                if(validate_args(argv[i+1], argv[0], "data"))
                     return 1;
-                }
-                cred = argv[i+1];
+                src = argv[i+1];
                 dec_stat = 1;
             } else 
                 continue;
@@ -233,24 +257,32 @@ int main(int argc, char*argv[]){
     if(enc_stat && dec_stat)
     {
         fprintf(stderr, "OperationError: can't perform both operation at the same time.");
+        putchar(ch);
         return 1;
     }
     
     if(enc_stat == 0 && dec_stat == 0)
     {
         fprintf(stderr, "OperationError: no operation or data specified.");
+        putchar(ch);
         return 1;
     }   
 
-    if(enc_stat) 
-    {
-        keygen = key_generator(key, cred);
-        encrypt(cred, keygen);
-    } else if(dec_stat) 
-    {
-        keygen = key_generator(key, cred);
-        decrypt(cred, keygen);
+    if(!strncmp(src, "file:", 5)){
+        for(i = 0; i < 5; ++i)
+            delete(src, 0, strlen(src));
+        cred = get_file_data(src);
+    } else {
+        cred = src;
     }
+    keygen = key_generator(key, cred);
+
+    if(enc_stat) 
+        op = 'e';
+    else if(dec_stat) 
+        op = 'd';
+
+    eval(cred,keygen, op);
 
     return 0;
 }
