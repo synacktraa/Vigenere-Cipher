@@ -55,6 +55,7 @@ Output:
 ```bash
 Cxyb xfsw nbshogr :)
 ```
+---
 
 ```bash
 ./vigit -k key -e -f note
@@ -71,6 +72,7 @@ Output:
 ```bash
 Have a nice day (;
 ```
+---
 
 ```bash
 ./vigit -k key -d -f encoded
