@@ -3,10 +3,10 @@ FLAGS=-g -Wall
 
 all: vigit
 
-vigcipher.o: vigcipher.c
+vigenere_cipher.o: vigenere_cipher.c
 	$(BIN) $(FLAGS) -c $^
 
-vigit: vigcipher.o
+vigit: vigenere_cipher.o
 	$(BIN) $(FLAGS) $^ -o $@
 
 clean:
