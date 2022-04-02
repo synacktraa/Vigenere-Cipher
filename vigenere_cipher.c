@@ -78,6 +78,9 @@ char* get_file_data(char*file) {
     char* data_storage = (char*)malloc(sizeof(char) * buffer_len);
     char* buffer = (char*)malloc(sizeof(char) * buffer_len);
 
+    if(data_storage == NULL || buffer == NULL)
+        exit(1);
+
     memset(data_storage, 0, strlen(data_storage));
     while (fgets(buffer, buffer_len, file_in))
         strcat(data_storage, buffer);
@@ -132,7 +135,7 @@ void eval(char* cred, char* key, char mode){
     char *outcome = (char*)malloc(sizeof(char) * cred_len);
 
     if(outcome == NULL)
-        exit(0);
+        exit(1);
 
     if(mode == 'e'){
         for(i = 0; i < strlen(cred); ++i){
