@@ -94,7 +94,7 @@ char* key_generator(char*key, char*cred){
 
     int cred_len, key_len, j = 0, i;
 
-    cred_len = strlen(cred);
+    cred_len = strlen(cred)+1;
     key_len = strlen(key);
 
     char *gen_key = (char*)malloc(sizeof(char) * cred_len);
@@ -131,7 +131,7 @@ char* key_generator(char*key, char*cred){
 
 void eval(char* cred, char* key, char mode){
 
-    int cred_len = strlen(cred), i;
+    int cred_len = strlen(cred)+1, i;
     char *outcome = (char*)malloc(sizeof(char) * cred_len);
 
     if(outcome == NULL)
